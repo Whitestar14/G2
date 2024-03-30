@@ -1,13 +1,13 @@
 /** @format */
 
 // gameLoop.js
-import { getCanvasContext, clearCanvas } from "./gameCanvas.js";
-import Player from "./player.js";
-import { createObstacles, updateObstacles } from "./obstacles.js";
-import { updateScore, displayScore, displayHighScore } from "./score.js";
-import { showGameOverModal } from "./gameOver.js";
 import { checkCollisions } from "./collisions.js";
-import { createPauseButton, createRestartButton, shouldPause } from "./createButton.js";
+import { clearCanvas, getCanvasContext } from "./gameCanvas.js";
+import { showGameOverModal } from "./gameOver.js";
+import { createObstacles, updateObstacles } from "./obstacles.js";
+import Player from "./player.js";
+import { displayHighScore, displayScore, updateScore } from "./score.js";
+import { createPauseButton, createRestartButton, shouldPause } from "./ui.js";
 
 export function startGameLoop(canvas) {
   const ctx = getCanvasContext(canvas);
