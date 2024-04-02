@@ -20,106 +20,152 @@
   src: url(../fonts/Enriqueta/Enriqueta-Bold.ttf);
 }
 
-body {
+* {
+  font-family: "Enriqueta Regular", sans-serif;
+  font-weight: 500;
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
   height: 100vh;
   background-color: #f0f0f0;
-  font-family: "Enriqueta", sans-serif;
+}
+
+body,
+html,
+.close-button-container,
+.modal {
+  display: grid;
+}
+
+body,
+html,
+.modal {
+  place-items: center;
 }
 
 h1,
 h2,
 h3,
-p,
-button {
-  font-family: "Enriqueta Regular", sans-serif;
-}
-
-h1 {
+h4,
+h5,
+h6 {
   font-weight: 700;
 }
 
-
 canvas {
-  border: 1px solid #000;
-  border-radius: 1em;
+  border: 1px solid #000000;
+  border-radius: 1.5em;
 
   @media (max-width: 800px) {
     width: 95dvw;
   }
 }
 
-/* Modal styles */
+button {
+  border: 1px solid #888888;
+  padding: 5px 15px;
+
+  &:hover {
+    background-color: #dfdfdf;
+  }
+
+  &:focus {
+    background-color: #f0f0f0;
+  }
+}
+
+/* Modal Styles */
 .modal {
+  width: 50%;
+  height: 100%;
+  overflow: auto;
   position: absolute;
   top: 50%;
   left: 50%;
-  translate: -50% -50%;
-  width: 50%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  display: grid;
-  place-items: center;
+  transform: translate(-50%, -50%);
 }
 
 .backdrop {
-  background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+  background-color: rgba(0, 0, 0, 0.5);
   height: 100%;
-  display: none; /* Hidden by default */
   width: 100%;
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
+  position: fixed;
+  z-index: 1;
   top: 0;
+  left: 0;
   justify-content: center;
   align-items: center;
+  display: none;
 }
 
-/* Modal content */
+/* Modal Content */
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border-radius: 2.5em;
+  padding: 30px;
   min-height: 200px;
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
-  position: relative; /* Position relative for speech bubble */
+  border: 1px solid #888888;
+  width: clamp(200px, 60%, 650px);
+  position: relative;
+  margin: 15% auto;
+  border-radius: 2.5em;
+
+  h2 {
+    font-size: 2rem;
+    margin-block-end: 10px;
+  }
+
+  p,
+  button {
+    margin-block: 5px;
+  }
+
+  button {
+    outline: none;
+    border: 0.5px solid #888888;
+  }
 }
 
-/* Close button */
 .close-button-container {
   height: 3em;
   width: 3em;
-  transition: background 200ms ease-in-out, color 300ms ease;
   top: 5%;
-  right: 2.5%;
-  padding: 0.2em;
-  display: grid;
+  right: 3.5%;
   justify-content: center;
-  align-items: center;
-  border-radius: 50%;
+  padding: 0.2em;
   position: absolute;
+  border-radius: 50%;
+  transition: background 200ms ease-in-out, color 300ms ease;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    right: 5%;
+  }
+
+  &:hover {
+    background-color: #aac9;
+  }
+
+  .close {
+    color: #605e5e;
+    display: inline-flex;
+    font-size: 2rem;
+    margin: 0;
+  }
+
+  &:hover .close,
+  .close:focus {
+    color: #000000;
+  }
 }
 
-.close-button-container:hover {
-  background: #aac9;
-}
-
-.close {
-  color: #aaa;
-  font-size: 30px;
-  margin: 0;
-  /* font-weight: bold; */
-}
-
-.close-button-container:hover .close,
-.close:focus {
-  color: black;
-  text-decoration: none;
+.button-container {
+  display: flex;
+  gap: 1em;
+  padding: 20px;
+  transform: translateY(-80%);
 }

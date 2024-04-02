@@ -2,7 +2,6 @@
 
 // player.js
 
-
 export default class Player {
   constructor(x, y, width, height, speed, jumpHeight, maxJumps, canvas) {
     this.x = x;
@@ -26,11 +25,12 @@ export default class Player {
       if (this.jumpVelocity <= 0) {
         this.jumping = false;
       }
-    } else if (this.y < this.canvas.height - this.height) {
+    } else if (this.y <= this.canvas.height - this.height) {
       this.y += this.jumpVelocity;
       this.jumpVelocity += 0.5; // Accelerate downwards gradually
     } else {
       this.jumps = 0; // Reset jumps when player lands
+      this.jumpVelocity = 2;
     }
   }
 

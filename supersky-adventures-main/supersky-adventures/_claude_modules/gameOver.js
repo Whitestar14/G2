@@ -1,11 +1,11 @@
 /** @format */
 
-import { playerScore } from "./score.js";
+import { playerScore, updateHighScore } from "./score.js";
 
 // gameOver.js
 let modalBackdrop, modal, modalContent;
 
-export function createGameOverModal() {
+export default function createGameOverModal() {
   // Create game over modal
   modalBackdrop = document.createElement("div");
   modalBackdrop.classList.add("backdrop");
@@ -53,11 +53,13 @@ export function createGameOverModal() {
   // cancelAnimationFrame(gameLoop);
 }
 
-export function showGameOverModal() {
+export function showGameOverModal(music) {
   // Display game over modal
   modalBackdrop.style.display = "block";
   const finalScore = document.getElementById("finalScore");
   finalScore.textContent = playerScore; // Assuming playerScore is defined in another module
+  updateHighScore();
+  music.pauseAudio();
 }
 
 export function hideGameOverModal() {
