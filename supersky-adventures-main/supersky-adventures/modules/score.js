@@ -3,8 +3,8 @@
 // score.js
 export let playerScore = 0;
 let highScore = localStorage.getItem("highScore") || 0;
-let lastScoreUpdate = 0; // Add this line
-let scoreUpdateInterval = 30; // Score update interval in milliseconds (adjust as needed)
+let lastScoreUpdate = 0; 
+let scoreUpdateInterval = 30; // Score update interval in milliseconds
 
 export function updateScore() {
   // Increment score tick

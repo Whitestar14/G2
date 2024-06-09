@@ -1,8 +1,7 @@
-/** @format */
-
+// gameOver.js
+import { resetGame } from "./gameLoop.js";
 import { playerScore, updateHighScore } from "./score.js";
 
-// gameOver.js
 let modalBackdrop, modal, modalContent;
 
 export default function createGameOverModal() {
@@ -49,8 +48,6 @@ export default function createGameOverModal() {
 
   // Add restart button functionality
   restartBtn.addEventListener("click", restartGame);
-
-  // cancelAnimationFrame(gameLoop);
 }
 
 export function showGameOverModal(music) {
@@ -64,10 +61,14 @@ export function showGameOverModal(music) {
 
 export function hideGameOverModal() {
   // Hide the game over modal
-  modalBackdrop.style.display = "none";
+  const modalBackdrop = document.getElementById("gameOverModal");
+  if (modalBackdrop) {
+    modalBackdrop.style.display = "none";
+  }
 }
 
 export function restartGame() {
   // Restart the game
-  location.reload();
+  hideGameOverModal();
+  resetGame();
 }

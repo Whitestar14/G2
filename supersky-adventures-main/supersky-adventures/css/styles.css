@@ -1,5 +1,6 @@
 /** @format */
 
+/* Font-face initialisation */
 @font-face {
   font-family: "Enriqueta Regular";
   src: url(../fonts/Enriqueta/Enriqueta-Regular.ttf);
@@ -20,62 +21,79 @@
   src: url(../fonts/Enriqueta/Enriqueta-Bold.ttf);
 }
 
+/* Global Reset */
 * {
-  font-family: "Enriqueta Regular", sans-serif;
   font-weight: 500;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --font-color: #000000;
+  --hover-color: #3b3b3b;
+  --border-color: #888888;
+  --background-color: #f0f0f0;
+  --close-button-color: #5e5e5e;
+  --modal-background: #fefefe;
+  --hover-background: #dfdfdf;
+  --backdrop-background: rgba(0, 0, 0, 0.5);
+  --font-family: "Enriqueta Regular", sans-serif;
+  --font-family-bold: "Enriqueta Bold", sans-serif;
+  --font-family-medium: "Enriqueta Medium", sans-serif;
+  --border-radius: 1.5em;
 }
 
 body,
 html {
+  font-family: "Enriqueta Bold", sans-serif;
   margin: 0;
   padding: 0;
   height: 100vh;
-  background-color: #f0f0f0;
+  background-color: var(--background-color);
+
+  h1 {
+    font-family: var(--font-family-bold);
+    font-weight: 600;
+  }
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    font-weight: 300;
+    font-family: var(--font-family-medium);
+  }
 }
 
 body,
-html,
-.close-button-container,
-.modal {
+html {
   display: grid;
-}
-
-body,
-html,
-.modal {
   place-items: center;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 700;
-}
-
 canvas {
-  border: 1px solid #000000;
-  border-radius: 1.5em;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
 
-  @media (max-width: 800px) {
+  /* @media (max-width: 800px) {
     width: 95dvw;
-  }
+  } */
 }
 
 button {
-  border: 1px solid #888888;
   padding: 5px 15px;
+  border: 1px solid var(--border-color);
+  font-family: var(--font-family);
 
   &:hover {
-    background-color: #dfdfdf;
+    background-color: var(--hover-background);
   }
 
   &:focus {
-    background-color: #f0f0f0;
+    background-color: var(--background-color);
   }
 }
 
@@ -91,7 +109,7 @@ button {
 }
 
 .backdrop {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--backdrop-background);
   height: 100%;
   width: 100%;
   position: fixed;
@@ -105,14 +123,14 @@ button {
 
 /* Modal Content */
 .modal-content {
-  background-color: #fefefe;
-  padding: 30px;
-  min-height: 200px;
-  border: 1px solid #888888;
-  width: clamp(200px, 60%, 650px);
-  position: relative;
+  background-color: var(--modal-background);
   margin: 15% auto;
-  border-radius: 2.5em;
+  padding: 35px;
+  min-height: 200px;
+  position: relative;
+  width: clamp(200px, 60%, 650px);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
 
   h2 {
     font-size: 2rem;
@@ -126,7 +144,7 @@ button {
 
   button {
     outline: none;
-    border: 0.5px solid #888888;
+    border: 1px solid var(--border-color);
   }
 }
 
@@ -147,19 +165,19 @@ button {
   }
 
   &:hover {
-    background-color: #aac9;
+    background-color: var(--hover-background);
   }
 
   .close {
-    color: #605e5e;
-    display: inline-flex;
-    font-size: 2rem;
     margin: 0;
+    font-size: 2rem;
+    display: inline-flex;
+    color: var(--close-button-color);
   }
 
   &:hover .close,
   .close:focus {
-    color: #000000;
+    color: var(--hover-color);
   }
 }
 
@@ -168,4 +186,10 @@ button {
   gap: 1em;
   padding: 20px;
   transform: translateY(-80%);
+}
+
+.close-button-container,
+.modal {
+  display: grid;
+  place-items: center;
 }

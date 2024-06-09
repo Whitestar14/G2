@@ -7,9 +7,7 @@ import createGameOverModal from "./gameOver.js";
 import { handleInput } from "./input.js";
 import {
   createContainer,
-  createStartInterface,
-  pauseButton,
-  restartButton,
+  createStartInterface
 } from "./ui.js";
 
 export function init() {
