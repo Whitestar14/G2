@@ -1,41 +1,35 @@
 // Audio.js
 
-export default class Music {
-  constructor(backgroundMusicVolume, jumpSFXVolume, currentTime, loop) {
+export default class AudioManager {
+  constructor() {
     this.backgroundMusic = new Audio("./assets/game_music.mp3");
     this.jumpSFX = new Audio("./assets/jumpSFX.mp3");
-    this.backgroundMusic.loop = loop;
-    this.jumpSFX.currentTime = currentTime;
-    this.backgroundMusic.volume = backgroundMusicVolume;
-    this.jumpSFX.volume = jumpSFXVolume;
   }
 
-  playBackgr() {
-    this.backgroundMusic.play();
-    this.backgroundMusic.loop = true;
+  setVolume(volume, type = "background") {
+    if (type === "background") {
+      this.backgroundMusic.volume = volume;
+    } else if (type === "sfx") {
+      this.jumpSFX.volume = volume;
+    }
   }
 
-  pauseBackgr() {
-    this.backgroundMusic.pause();
-    this.backgroundMusic.loop = false;
+  play(type = "background") {
+    if (type === "background") {
+      this.backgroundMusic.loop = true;
+      this.backgroundMusic.play();
+    } else if (type === "sfx") {
+      this.jumpSFX.currentTime = 0;
+      this.jumpSFX.play();
+    }
+
   }
 
-  playSFX() {
-    this.jumpSFX.play();
-    this.jumpSFX.currentTime = 0;
-  }
-
-  pauseSFX() {
-    this.jumpSFX.pause();
-    this.jumpSFX.currentTime = 0;
-  }
-
-  playAudio() {
-    this.playBackgr();
-  }
-
-  pauseAudio() {
-    this.pauseBackgr();
-    this.pauseSFX();
+  pause(type = "background") {
+    if (type === "background") {
+      this.backgroundMusic.pause();
+    } else if (type === "sfx") {
+      this.jumpSFX.pause();
+    }
   }
 }

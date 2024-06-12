@@ -1,53 +1,56 @@
 // gameOver.js
 import { resetGame } from "./gameLoop.js";
 import { playerScore, updateHighScore } from "./score.js";
+import { createElement } from "./utils.js";
 
 let modalBackdrop, modal, modalContent;
 
 export default function createGameOverModal() {
   // Create game over modal
-  modalBackdrop = document.createElement("div");
-  modalBackdrop.classList.add("backdrop");
-  modalBackdrop.id = "gameOverModal";
+  modalBackdrop = createElement("div", ["backdrop"], { id: "gameOverModal" });
   document.body.appendChild(modalBackdrop);
 
-  modal = document.createElement("div");
-  modal.classList.add("modal");
+  modal = createElement("div", ["modal"]);
   modalBackdrop.appendChild(modal);
 
-  modalContent = document.createElement("div");
-  modalContent.classList.add("modal-content");
+  modalContent = createElement("div", ["modal-content"]);
   modal.appendChild(modalContent);
 
-  const closeBtn = document.createElement("span");
-  closeBtn.classList.add("close");
-  closeBtn.innerHTML = "&times;";
+  const closeBtn = createElement("span", ["close"], {}, "×");
 
-  const closeBtnContainer = document.createElement("div");
-  closeBtnContainer.classList.add("close-button-container");
-  closeBtnContainer.appendChild(closeBtn);
+  const closeBtnContainer = createElement(
+    "div",
+    ["close-button-container"],
+    {},
+    [closeBtn]
+  );
   modalContent.appendChild(closeBtnContainer);
 
-  const modalTitle = document.createElement("h2");
-  modalTitle.textContent = "Game Over";
+  const modalTitle = createElement("h2", [], {}, "Game Over");
   modalContent.appendChild(modalTitle);
 
-  const finalScoreText = document.createElement("p");
-  finalScoreText.innerHTML = "Your score: <span id='finalScore'>0</span>";
+  const finalScoreText = createElement("p", [], {}, [
+    `Your score: `,
+    createElement("span", [], { id: "finalScore" }, `${playerScore}`),
+  ]);
   modalContent.appendChild(finalScoreText);
 
-  const restartBtn = document.createElement("button");
-  restartBtn.id = "restartButton";
-  restartBtn.textContent = "Restart Game";
+  const restartBtn = createElement(
+    "button",
+    [],
+    { id: "restartButtonModal" },
+    ["Restart Game"],
+    { click: restartGame }
+  );
   modalContent.appendChild(restartBtn);
 
   // Add close button functionality
-  closeBtnContainer.addEventListener("click", () => {
+  closeBtnContainer.onclick = () => {
     hideGameOverModal();
-  });
+  };
 
   // Add restart button functionality
-  restartBtn.addEventListener("click", restartGame);
+  restartBtn.onclick = () => restartGame;
 }
 
 export function showGameOverModal(music) {
@@ -56,7 +59,7 @@ export function showGameOverModal(music) {
   const finalScore = document.getElementById("finalScore");
   finalScore.textContent = playerScore; // Assuming playerScore is defined in another module
   updateHighScore();
-  music.pauseAudio();
+  music.pause("background");
 }
 
 export function hideGameOverModal() {

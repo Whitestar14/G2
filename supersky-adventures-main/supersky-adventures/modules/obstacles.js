@@ -17,7 +17,7 @@ export default class Obstacle {
 
   render(ctx) {
     // Render obstacle on canvas
-    ctx.fillStyle = "red";
+    ctx.fillStyle = "gray";
     ctx.fillRect(this.x, this.y, this.width, this.height);
   }
 }
@@ -38,14 +38,6 @@ export function createObstacles(canvas, player, obstacles) {
 
 export function updateObstacles(canvas, obstacles) {
   // // Update obstacle positions and remove off-screen obstacles
-  // for (let i = obstacles.length - 1; i >= 0; i--) {
-  //   obstacles[i].update();
-
-  //   // Remove obstacles that go offscreen
-  //   if (obstacles[i].x + obstacles[i].width < 0) {
-  //     obstacles.splice(i, 1);
-  //   }
-  // }
 
   for (let i = 0; i < obstacles.length; i++) {
     obstacles[i].update();

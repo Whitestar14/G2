@@ -14,3 +14,4 @@ export function checkCollisions(player, obstacles) {
   }
   return false; // No collision detected
 }
+

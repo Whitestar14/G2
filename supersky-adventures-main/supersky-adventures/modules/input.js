@@ -11,7 +11,7 @@ export function handleInput(player) {
       player.jumping = true;
       player.jumpVelocity = player.jumpHeight / 10;
       player.jumps++;
-      audio.playSFX();
+      audio.play("sfx");
     }
   });
 }

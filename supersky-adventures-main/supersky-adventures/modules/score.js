@@ -3,17 +3,29 @@
 // score.js
 export let playerScore = 0;
 let highScore = localStorage.getItem("highScore") || 0;
-let lastScoreUpdate = 0; 
+let lastScoreUpdate = 0;
 let scoreUpdateInterval = 30; // Score update interval in milliseconds
+let scoringMultiplier = 1; // Initial scoring multiplier
 
 export function updateScore() {
   // Increment score tick
   lastScoreUpdate++;
+
   // Increase score if score tick interval reached
   if (lastScoreUpdate >= scoreUpdateInterval) {
-    playerScore++;
+    setTimeout(() => {
+      playerScore += scoreFactor(scoringMultiplier);
+    }, 1000)
     lastScoreUpdate = 0; // Reset score tick
+
+    // Increase scoring multiplier over time
+    scoringMultiplier += 0.01;
   }
+
+  function scoreFactor(multiplier) {
+    return Math.ceil(Math.random() * 5 * multiplier) + 1;
+  }
+
   return playerScore;
 }
 
@@ -43,4 +55,3 @@ export function updateHighScore() {
     localStorage.setItem("highScore", highScore);
   }
 }
-

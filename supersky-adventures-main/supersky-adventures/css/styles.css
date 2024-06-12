@@ -30,14 +30,14 @@
 }
 
 :root {
-  --font-color: #000000;
-  --hover-color: #3b3b3b;
-  --border-color: #888888;
-  --background-color: #f0f0f0;
-  --close-button-color: #5e5e5e;
-  --modal-background: #fefefe;
-  --hover-background: #dfdfdf;
-  --backdrop-background: rgba(0, 0, 0, 0.5);
+   --font-color: #534137;
+  --hover-color: #967359;
+  --border-color: #b09d89;
+  --background-color: #f9f0e5;
+  --close-button-color: #392e24;
+  --modal-background: #fef7eb;
+  --hover-background: #e6ddce;
+  --backdrop-background: rgba(57, 46, 36, 0.5);
   --font-family: "Enriqueta Regular", sans-serif;
   --font-family-bold: "Enriqueta Bold", sans-serif;
   --font-family-medium: "Enriqueta Medium", sans-serif;
@@ -75,17 +75,18 @@ html {
 }
 
 canvas {
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 
-  /* @media (max-width: 800px) {
+  @media (max-width: 800px) {
     width: 95dvw;
-  } */
+  }
 }
 
 button {
+  background: transparent;
   padding: 5px 15px;
-  border: 1px solid var(--border-color);
+  border: 1.5px solid var(--border-color);
   font-family: var(--font-family);
 
   &:hover {
@@ -192,4 +193,29 @@ button {
 .modal {
   display: grid;
   place-items: center;
+}
+
+.version-element {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: #666;
+}
+
+.menu-button {
+  border: 2px solid var(--border-color);
+  font-weight: bold;
+  position: absolute;
+  top: 10%;
+  right: 10%;
+}
+
+#inGameMenu {
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  border: 0.5px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--backdrop-background);
+  backdrop-filter: blur(2px);
 }
