@@ -54,10 +54,16 @@
  * @returns {void}
  */
 // ui.js
-import { audio } from "./gameLoop.js";
 import { restartGame } from "./gameOver.js";
 import { init } from "./main.js";
 import { createElement } from "./utils.js";
+import {
+  audio,
+  startGameLoop,
+  resumeGameLoop,
+  pauseGameLoop,
+} from "./gameLoop.js";
+import { updateTextContent } from "./utils.js";
 
 export function createStartInterface() {
   // Create the welcoming start game button
@@ -79,6 +85,36 @@ export function createStartInterface() {
 
 let isPaused = false;
 let gameLoopFunction;
+let fpsDisplay;
+let frameTimes = [];
+let lastFrameTimeStamp = 0;
+
+export function createFpsDisplay() {
+  if (!fpsDisplay) {
+    fpsDisplay = createElement("div", [], { id: "fpsDisplay" }, ["FPS: 0"]);
+    document.body.appendChild(fpsDisplay);
+  }
+}
+
+export function updateFpsDisplay(currentTime) {
+  if (lastFrameTimeStamp) {
+    const delta = currentTime - lastFrameTimeStamp;
+    frameTimes.push(delta);
+    if (frameTimes.length > 100) {
+      // Keep the last 100 frame times
+      frameTimes.shift();
+    }
+
+    const averageFrameTime =
+      frameTimes.reduce((a, b) => a + b) / frameTimes.length;
+    const fps = Math.round(1000 / averageFrameTime);
+
+    if (fpsDisplay) {
+      updateTextContent(fpsDisplay, `FPS: ${fps}`);
+    }
+  }
+  lastFrameTimeStamp = currentTime;
+}
 
 export function createPauseButton(gameLoop) {
   gameLoopFunction = gameLoop; // Set the game loop function
@@ -96,7 +132,7 @@ export function createPauseButton(gameLoop) {
   }
 }
 
-export function createRestartButton(canvas) {
+export function createRestartButton() {
   let restartButton = document.getElementById("restartButton");
   if (!restartButton) {
     restartButton = createElement(
@@ -122,10 +158,11 @@ function togglePause() {
   if (isPaused) {
     pauseButton.textContent = "Resume";
     audio.pause("background");
+    pauseGameLoop();
   } else {
     pauseButton.textContent = "Pause";
     audio.play("background");
-    requestAnimationFrame(gameLoopFunction); // Call the game loop function with requestAnimationFrame
+    resumeGameLoop();
     pauseButton.blur(); // Remove focus from the button
   }
 }

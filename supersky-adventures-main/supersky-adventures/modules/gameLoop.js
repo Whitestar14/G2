@@ -1,10 +1,3 @@
-/**
- * Starts the game loop and initializes the game state.
- * @param {HTMLCanvasElement} canvasElement - The canvas element for the game.
- * @returns {Player} - The player instance.
- */
-
-// Imports
 import AudioManager from "./audio.js";
 import { checkCollisions } from "./collisions.js";
 import { clearCanvas, getCanvasContext } from "./gameCanvas.js";
@@ -18,49 +11,72 @@ import {
   resetScore,
   updateScore,
 } from "./score.js";
-import { createPauseButton, createRestartButton, shouldPause } from "./ui.js";
+import {
+  createFpsDisplay,
+  createPauseButton,
+  createRestartButton,
+  shouldPause,
+  updateFpsDisplay,
+} from "./ui.js";
 
 // Constants
-export const audio = new AudioManager(0.5, 0.8, 0, true); // Instantiate AudioManager
-
+export const audio = new AudioManager(0.5, 0.8, 0, true);
 const GameState = {
   START: "start",
   PLAYING: "playing",
   PAUSED: "paused",
   GAME_OVER: "game_over",
 };
+const FPS = 60;
+const MS_PER_FRAME = 800 / FPS;
 
 // Global Variables
 let currentState = GameState.START;
 let player,
   obstacles = [];
 let canvas, animationFrameId;
+let previousTime = 0;
+let accumulatedTime = 0;
 
 // Game Loop Function
-function gameLoop(ctx, canvas) {
-  if (shouldPause() || currentState !== GameState.PLAYING) return;
+export function gameLoop(ctx, canvas, currentTime) {
+  const deltaTime = currentTime - previousTime;
+  previousTime = currentTime;
+  accumulatedTime += deltaTime;
+
+  if (shouldPause() || currentState !== GameState.PLAYING) {
+    return;
+  }
 
   clearCanvas(ctx, canvas);
 
-  player.update();
+  while (accumulatedTime >= MS_PER_FRAME) {
+    player.update();
+    updateObstacles(canvas, obstacles);
+    createObstacles(canvas, player, obstacles);
+    updateScore();
+    accumulatedTime -= MS_PER_FRAME;
+  }
+
+  // Render game objects
   player.render(ctx);
-
-  updateObstacles(canvas, obstacles);
   obstacles.forEach((obstacle) => obstacle.render(ctx));
-
-  createObstacles(canvas, player, obstacles);
-
-  updateScore();
   displayScore(ctx);
   displayHighScore(ctx);
 
+  // Display FPS
+  updateFpsDisplay(currentTime);
+
+  // Check for collisions and game over conditions
   if (checkCollisions(player, obstacles)) {
     currentState = GameState.GAME_OVER;
     showGameOverModal(audio);
     return;
   }
 
-  animationFrameId = requestAnimationFrame(() => gameLoop(ctx, canvas));
+  setTimeout(() => {
+    animationFrameId = requestAnimationFrame(gameLoop.bind(null, ctx, canvas));
+  }, MS_PER_FRAME);
 }
 
 // Start Game Loop
@@ -69,25 +85,42 @@ export function startGameLoop(canvasElement) {
   const ctx = getCanvasContext(canvas);
   player = new Player(50, canvas.height - 50, 30, 30, 5, 150, 2, canvas);
 
-  createPauseButton(() => gameLoop(ctx, canvas));
+  createPauseButton(); // No need to pass gameLoop function
   createRestartButton(canvas);
-  audio.play("background"); // Play background music
+  createFpsDisplay(); // Create the FPS display
+  audio.play("background");
 
   currentState = GameState.PLAYING;
-  gameLoop(ctx, canvas);
+  previousTime = performance.now(); // Initialize previousTime
+  requestAnimationFrame(gameLoop.bind(null, ctx, canvas));
 
   return player;
 }
 
+// Resume Game Loop
+export function resumeGameLoop() {
+  const ctx = getCanvasContext(canvas);
+  previousTime = performance.now(); // Re-initialize previousTime when resuming
+  currentState = GameState.PLAYING;
+  requestAnimationFrame(gameLoop.bind(null, ctx, canvas));
+}
+
+// Pause Game Loop
+export function pauseGameLoop() {
+  currentState = GameState.PAUSED;
+}
+
 // Reset Game
 export function resetGame() {
-  cancelAnimationFrame(animationFrameId); // Cancel the existing animation frame
+  cancelAnimationFrame(animationFrameId);
   const ctx = getCanvasContext(canvas);
   clearCanvas(ctx, canvas);
   resetScore();
   obstacles = [];
   audio.play("background");
   currentState = GameState.PLAYING;
-  const player = startGameLoop(canvas);
-  handleInput(player); // Re-bind input to the new player instance
+  frameTimes = []; // Reset frame times
+  lastFrameTimeStamp = 0; // Reset last frame timestamp
+  startGameLoop(canvas);
+  handleInput(player);
 }

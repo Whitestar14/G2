@@ -71,3 +71,6 @@ export function createContainer(value, ...nodes) {
   return container;
 }
 
+export function updateTextContent(element, text) {
+  element.textContent = text;
+}
